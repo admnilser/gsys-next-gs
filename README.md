@@ -1,6 +1,6 @@
 # React App Boilerplate
 
-Um pacote NPM para inicializar rapidamente um aplicativo React usando as melhores tecnologias modernas, incluindo **Next.js**, **Mantine**, **Prisma**, **Lodash**, **Zustand**, e **NextAuth**.
+Um pacote NPM para inicializar rapidamente um aplicativo React usando as melhores tecnologias modernas, incluindo **Next.js**, **Mantine**, **Prisma**, **Lodash**, **Zustand** e **NextAuth**.
 
 ---
 
