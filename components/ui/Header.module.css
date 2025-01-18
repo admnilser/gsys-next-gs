@@ -10,7 +10,7 @@
   border-bottom: 1px solid var(--mantine-color-dark-8);
 }
 
-.headerInner {
+.inner {
   height: 100%;
   justify-content: space-between;
 }

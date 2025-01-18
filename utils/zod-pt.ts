@@ -19,7 +19,7 @@ type Zod = typeof z;
 
 export function createZodParser(creator: (z: Zod) => z.ZodRawShape) {
   const schema = z.object(creator(z));
-  return (obj: unknown) => {
+  const parser = (obj: unknown) => {
     const { success, data: parsed, error } = schema.safeParse(obj);
     if (success) {
       return { success, parsed };
@@ -31,4 +31,6 @@ export function createZodParser(creator: (z: Zod) => z.ZodRawShape) {
       return { success, errors };
     }
   };
+  parser.schema = schema;
+  return parser;
 }

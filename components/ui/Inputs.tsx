@@ -1,20 +1,26 @@
 "use client";
 
 import {
+  __BaseInputProps,
   InputBase,
-  TextInput as MantineTextInput,
+  TextInput as ManTextInput,
+  TextInputProps as ManTextInputProps,
   PasswordInput,
-  PasswordInputProps,
 } from "@mantine/core";
 
 import React from "react";
 
 import { IMaskInput } from "react-imask";
 
+import { Icon, IconName } from "./Icon";
+
 export type MaskExpr = string | "phone" | "cep" | "cpf" | "cpnj";
 
-export interface TextInputProps {
+export interface TextInputProps extends Omit<ManTextInputProps, "value"> {
   mask?: MaskExpr;
+  component?: React.ComponentType<__BaseInputProps>;
+  leftIcon?: IconName;
+  rightIcon?: IconName;
 }
 
 const CustomMasks: Record<string, MaskExpr> = {
@@ -24,18 +30,25 @@ const CustomMasks: Record<string, MaskExpr> = {
   cpnj: "99.999.999/9999-99",
 };
 
-export function TextInput({ mask, ...props }: TextInputProps) {
+export function TextInput({
+  mask,
+  component: Component = ManTextInput,
+  leftIcon,
+  rightIcon,
+  ...props
+}: TextInputProps) {
   const iMask = mask ? CustomMasks[mask] || mask : undefined;
+
+  props.leftSection = leftIcon ? <Icon name={leftIcon} /> : undefined;
+  props.rightSection = rightIcon ? <Icon name={rightIcon} /> : undefined;
 
   return iMask ? (
     <InputBase mask={iMask} component={IMaskInput} {...props} />
   ) : (
-    <MantineTextInput {...props} />
+    <Component {...props} />
   );
 }
 
-export type SecretInputProps = PasswordInputProps;
-
-export function SecretInput(props: SecretInputProps) {
-  return <PasswordInput {...props} />;
+export function SecretInput(props: TextInputProps) {
+  return <TextInput component={PasswordInput} {...props} />;
 }

@@ -3,7 +3,6 @@
 import {
   Alert,
   AlertProps,
-  Box,
   BoxProps,
   Drawer,
   Group,
@@ -12,9 +11,12 @@ import {
   LoadingOverlay,
   Text,
   Divider,
+  Stack,
 } from "@mantine/core";
 
 import { createFormContext, FormErrors } from "@mantine/form";
+
+import { fetchJson } from "../../utils/fetch";
 
 import { Button, ButtonProps } from "./Buttons";
 
@@ -28,14 +30,20 @@ export type FormValues = Record<string, string | number | null | undefined>;
 
 const [FormProvider, useFormContext, useForm] = createFormContext<FormValues>();
 
-export interface FormProps {
+export interface FormProps extends React.PropsWithChildren {
   values?: FormValues;
-  children?: React.ReactNode;
-  onSubmit: (values: FormValues) => Promise<FormErrors | void>;
+  action?: string;
+  onSubmit?: (values: FormValues) => Promise<FormErrors | void>;
   onValidate?: (values: FormValues) => FormErrors;
 }
 
-export function Form({ values, children, onSubmit, onValidate }: FormProps) {
+export function Form({
+  action,
+  values,
+  children,
+  onSubmit,
+  onValidate,
+}: FormProps) {
   const form = useForm({
     mode: "uncontrolled",
     initialValues: values || {},
@@ -45,6 +53,13 @@ export function Form({ values, children, onSubmit, onValidate }: FormProps) {
   const handleSubmit = async (values: FormValues) => {
     if (onSubmit) {
       const errors = await onSubmit(values);
+      if (errors) form.setErrors(errors);
+    } else if (action) {
+      const { errors } = await fetchJson<FormValues, { errors: FormErrors }>({
+        path: action,
+        method: "POST",
+        data: values,
+      });
       if (errors) form.setErrors(errors);
     }
   };
@@ -79,10 +94,10 @@ export type FormBodyProps = React.PropsWithChildren<BoxProps>;
 export function FormBody({ children }: FormBodyProps) {
   const { submitting } = useFormContext();
   return (
-    <Box p="sm">
+    <Stack p="xs" gap="xs">
       <LoadingOverlay visible={submitting} />
       {children}
-    </Box>
+    </Stack>
   );
 }
 
@@ -92,7 +107,9 @@ export function FormFoot({ children, ...props }: FormFootProps) {
   return (
     <>
       <Divider my="sm" />
-      <Group {...props}>{children}</Group>
+      <Group p="xs" {...props}>
+        {children}
+      </Group>
     </>
   );
 }
@@ -101,8 +118,12 @@ export function FormButton(props: ButtonProps) {
   return <Button {...props} />;
 }
 
-export function FormSubmit(props: ButtonProps) {
-  return <FormButton {...props} type="submit" />;
+export function FormSubmit({ children, ...props }: ButtonProps) {
+  return (
+    <FormButton type="submit" {...props}>
+      {children || "Salvar"}
+    </FormButton>
+  );
 }
 
 export type FormFieldType = "text" | "secret" | "check" | "combo" | "image";

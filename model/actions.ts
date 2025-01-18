@@ -57,8 +57,6 @@ export async function createEntityActions<E extends Entity>(res: Resource<E>) {
         repo.findMany({ where: findWhere, skip, take, orderBy }),
       ]);
 
-      console.log("findmany", query, findWhere);
-
       const page = skip / take + 1;
       const pageSize = take;
       const pageCount =

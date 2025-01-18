@@ -3,21 +3,16 @@
 const fs = require("fs");
 const path = require("path");
 
-const entitiesJsonPath = path.join(process.cwd(), "./entities.json");
+const entities = [];
 
-async function generate(folder, template, indexTemplate) {
+fs.readdirSync("./models").forEach((file) => {
+  let name = path.basename(file, path.extname(file));
+  entities.push(name.charAt(0).toUpperCase() + name.slice(1));
+});
+
+async function generate(name, folder, template) {
   const folderPath = path.join(process.cwd(), folder);
   const templatePath = path.join(process.cwd(), template);
-
-  const entitiesData = JSON.parse(fs.readFileSync(entitiesJsonPath, "utf-8"));
-  const entities = entitiesData.entities;
-
-  if (!Array.isArray(entities)) {
-    console.error(
-      'O arquivo entities.json deve conter um array em "entities".'
-    );
-    process.exit(1);
-  }
 
   if (!fs.existsSync(folderPath)) {
     fs.mkdirSync(folderPath);
@@ -27,12 +22,13 @@ async function generate(folder, template, indexTemplate) {
     fs.unlinkSync(path.join(folderPath, file));
   });
 
-  const templateContent = fs.readFileSync(templatePath, "utf-8");
+  const templateContent = fs.readFileSync(`${templatePath}.template`, "utf-8");
 
   let indexContent = "";
-  if (indexTemplate) {
-    const indexTemplatePath = path.join(process.cwd(), indexTemplate);
-    indexContent = fs.readFileSync(indexTemplatePath, "utf-8") + "\n\n";
+
+  const indexPath = templatePath + "-index.template";
+  if (fs.existsSync(indexPath)) {
+    indexContent = fs.readFileSync(indexPath, "utf-8") + "\n\n";
   }
 
   entities.forEach((entity) => {
@@ -45,6 +41,7 @@ async function generate(folder, template, indexTemplate) {
       .replace(/%\{entity\}/g, entityLower);
 
     fs.writeFileSync(filePath, fileContent, "utf-8");
+
     console.log(`Arquivo gerado: ${filePath}`);
 
     indexContent += `export * from "./${entityLower}";\n`;
@@ -52,21 +49,17 @@ async function generate(folder, template, indexTemplate) {
 
   fs.writeFileSync(path.join(folderPath, "index.ts"), indexContent, "utf-8");
 
-  console.log("Arquivos gerados com sucesso!");
+  console.log(`${name} gerados com sucesso!`);
 }
 
 const execute = async () => {
-  await generate("./actions", "./next-gs/cmd/generate-actions.template");
-
-  await generate(
-    "./hooks",
-    "./next-gs/cmd/generate-hooks.template",
-    "./next-gs/cmd/generate-hooks-index.template"
-  );
+  await generate("Actions", "./actions", "./next-gs/cmd/generate-actions");
+  await generate("Hooks", "./hooks", "./next-gs/cmd/generate-hooks");
 };
 
-// Executar o script
-execute().catch((err) => {
-  console.error("Erro ao gerar ações:", err);
-  process.exit(1);
-});
+if (entities.length > 0) {
+  execute().catch((err) => {
+    console.error("Erro ao gerar ações:", err);
+    process.exit(1);
+  });
+}

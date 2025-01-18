@@ -1,4 +1,7 @@
+"use server";
+
 import { JWTPayload, SignJWT, jwtVerify } from "jose";
+import bcrypt from "bcrypt";
 
 const secretKey = process.env.AUTH_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
@@ -20,4 +23,14 @@ export async function decrypt(session: string | undefined = "") {
   } catch (error) {
     console.error("decrypt failed", error);
   }
+}
+
+export async function hashPassword(plain: string) {
+  const hashed = await bcrypt.hash(plain, 10);
+  return hashed;
+}
+
+export async function checkPassword(plain: string, hashed: string) {
+  const isMatch = await bcrypt.compare(plain, hashed);
+  return isMatch;
 }

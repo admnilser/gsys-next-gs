@@ -21,14 +21,18 @@ model UserRole {
 }
 
 model User {
-  id       String     @id @default(auto()) @map("_id") @db.ObjectId
-  name     String     @unique
-  email    String     @unique
-  pswd     String
-  chats    Chat[]
-  messages Message[]
-  roles    UserRole[]
-  Company  Company[]
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  name      String     @unique
+  email     String     @unique
+  image     String?
+  pswd      String
+  lastLogin DateTime?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  chats     Chat[]
+  messages  Message[]
+  roles     UserRole[]
+  Company   Company[]
 }
 
 model Employee {

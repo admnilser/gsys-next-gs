@@ -11,6 +11,8 @@ export * from "./components/layouts/FilterForm";
 
 export * from "./components/pages/ErrorPage";
 export * from "./components/pages/LoginPage";
+export * from "./components/pages/SignUpPage";
+export * from "./components/pages/CenterPage";
 
 export * from "./components/ui/Form";
 export * from "./components/ui/Inputs";
@@ -18,6 +20,7 @@ export * from "./components/ui/Buttons";
 export * from "./components/ui/SearchInput";
 export * from "./components/ui/SelectInput";
 
+export * from "./utils/auth";
 export * from "./utils/lodash";
 export * from "./utils/fetch";
 export * from "./utils/crypt";

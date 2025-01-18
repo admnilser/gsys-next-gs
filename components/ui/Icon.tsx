@@ -16,6 +16,9 @@ import {
   IconDotsVertical,
   IconStar,
   IconPencil,
+  IconBrandFacebook,
+  IconKey,
+  IconMail,
 } from "@tabler/icons-react";
 
 export type IconName =
@@ -35,7 +38,10 @@ export type IconName =
   | "save"
   | "more"
   | "star"
-  | "pencil";
+  | "pencil"
+  | "facebook"
+  | "key"
+  | "mail";
 
 export interface IconProps extends TablerIconProps {
   name: IconName;
@@ -59,6 +65,9 @@ const Icons: Record<IconName, React.FC<TablerIconProps>> = {
   more: IconDotsVertical,
   star: IconStar,
   pencil: IconPencil,
+  facebook: IconBrandFacebook,
+  key: IconKey,
+  mail: IconMail,
 };
 
 export function Icon({ name, stroke = 1.5, ...rest }: IconProps) {

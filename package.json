@@ -1,12 +1,12 @@
 {
   "name": "next-gs",
-  "version": "1.0.6",
+  "version": "0.0.1",
   "description": "NPM package for building a React+NextJS+Prisma admin application.",
   "main": "index.ts",
   "scripts": {
     "start": "node index.ts",
-    "publish": "npm version patch && npm publish",
-    "backup": "git add . && git commit -m \"project backup\" && git push && yarn publish"
+    "publish": "yarn backup && npm version patch && npm publish",
+    "backup": "git add . && git commit -m \"project backup\" && git push"
   },
   "keywords": [
     "React",
@@ -34,11 +34,8 @@
     "dayjs": "^1.11.13",
     "fs": "^0.0.1-security",
     "i18next": "^24.2.1",
-    "immer": "^10.1.1",
     "jose": "^5.9.6",
     "lodash": "^4.17.21",
-    "mongodb": "^6.12.0",
-    "mongoose": "^8.9.3",
     "next": "15.1.3",
     "next-auth": "^4.24.11",
     "react": "^18.2.0",
@@ -64,7 +61,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/admnilser/gsys-next-gs.git"
+    "url": "git+https://github.com/admnilser/gsys-next-gs.git"
   },
   "bugs": {
     "url": "https://github.com/admnilser/gsys-next-gs/issues"

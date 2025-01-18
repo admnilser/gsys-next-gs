@@ -4,7 +4,7 @@ export type FetchArgs<B> = {
   method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 };
 
-async function awaitJson<B, R>({
+export async function fetchJson<B, R>({
   path,
   data,
   method,
@@ -20,10 +20,10 @@ async function awaitJson<B, R>({
 }
 
 export function useFetch(path: string) {
-  const get = <R>() => awaitJson<undefined, R>({ path, method: "GET" });
+  const get = <R>() => fetchJson<undefined, R>({ path, method: "GET" });
 
   const post = <B, R>(data: B) =>
-    awaitJson<B, R>({ path, data, method: "POST" });
+    fetchJson<B, R>({ path, data, method: "POST" });
 
   return { get, post };
 }
