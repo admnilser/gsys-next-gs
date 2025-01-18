@@ -5,7 +5,8 @@
   "main": "index.ts",
   "scripts": {
     "start": "node index.ts",
-    "backup": "git add . && git commit -m \"project backup\" && git push"
+    "publish": "npm version patch && npm publish",
+    "backup": "git add . && git commit -m \"project backup\" && git push && yarn publish"
   },
   "keywords": [
     "React",
