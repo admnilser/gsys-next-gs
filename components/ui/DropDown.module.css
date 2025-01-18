@@ -1,0 +1,8 @@
+.button {
+  padding: 6px 10px;
+  border-radius: var(--mantine-radius-sm);
+
+  &:hover {
+    background-color: var(--mantine-color-dark-5);
+  }
+}

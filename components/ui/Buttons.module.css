@@ -1,0 +1,11 @@
+.badge {
+  position: relative;
+
+  &>div {
+    position: absolute;
+    right: -3;
+    top: -3;
+    z-index: 99;
+    pointer-events: none;
+  }
+}
