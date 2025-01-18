@@ -1,0 +1,72 @@
+{
+  "name": "next-gs",
+  "version": "1.0.0",
+  "description": "NPM package for building a React+NextJS+Prisma admin application.",
+  "main": "index.ts",
+  "scripts": {
+    "start": "node index.ts",
+    "backup": "git add . && git commit -m \"project backup\" && git push"
+  },
+  "keywords": [
+    "React",
+    "npm",
+    "package",
+    "NextJS",
+    "Prisma",
+    "Mantine",
+    "NextAuth",
+    "Admin"
+  ],
+  "author": "Seu Nome <seu.email@example.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@hookform/resolvers": "^3.9.1",
+    "@mantine/core": "^7.15.2",
+    "@mantine/dates": "^7.15.2",
+    "@mantine/form": "^7.15.3",
+    "@mantine/hooks": "^7.15.2",
+    "@mantine/notifications": "^7.15.3",
+    "@prisma/client": "^6.2.0",
+    "@tabler/icons-react": "^3.26.0",
+    "@types/lodash": "^4.17.14",
+    "bcrypt": "^5.1.1",
+    "dayjs": "^1.11.13",
+    "fs": "^0.0.1-security",
+    "i18next": "^24.2.1",
+    "immer": "^10.1.1",
+    "jose": "^5.9.6",
+    "lodash": "^4.17.21",
+    "mongodb": "^6.12.0",
+    "mongoose": "^8.9.3",
+    "next": "15.1.3",
+    "next-auth": "^4.24.11",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-imask": "^7.6.1",
+    "zod": "^3.24.1",
+    "zod-i18n-map": "^2.27.0",
+    "zustand": "^5.0.3"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@types/bcrypt": "^5.0.2",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.1.3",
+    "postcss": "^8.4.49",
+    "postcss-preset-mantine": "^1.17.0",
+    "postcss-simple-vars": "^7.0.1",
+    "prisma": "^6.2.0",
+    "typescript": "^5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seu-usuario/my-npm-package.git"
+  },
+  "bugs": {
+    "url": "https://github.com/seu-usuario/my-npm-package/issues"
+  },
+  "homepage": "https://github.com/seu-usuario/my-npm-package#readme"
+}
