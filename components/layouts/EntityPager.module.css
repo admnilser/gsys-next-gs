@@ -1,0 +1,7 @@
+.pageSize {
+  @media (max-width: 400px) {
+    &>span {
+      display: none;
+    }
+  }
+}

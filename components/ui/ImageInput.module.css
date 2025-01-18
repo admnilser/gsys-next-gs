@@ -1,0 +1,15 @@
+.image {
+  cursor: pointer;
+  padding: 5px;
+  border-radius: var(--mantine-radius-sm);
+  border: 0.5px dashed #c9c9c9;
+  background-color: #2e2e2e;
+
+}
+
+.input {
+
+  & input {
+    display: none;
+  }
+}

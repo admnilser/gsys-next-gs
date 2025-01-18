@@ -1,0 +1,9 @@
+"use client";
+
+import { createServiceHook } from "../next-gs";
+
+import { %{Entity}, resource } from "../models/%{entity}";
+
+const use%{Entity} = createServiceHook<%{Entity}>(resource);
+
+export { use%{Entity} };

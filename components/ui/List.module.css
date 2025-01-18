@@ -1,0 +1,7 @@
+.item {
+  border-radius: var(--mantine-radius-sm);
+
+  &:hover {
+    background-color: var(--mantine-color-dark-6);
+  }
+}

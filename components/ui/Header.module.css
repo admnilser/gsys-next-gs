@@ -1,0 +1,16 @@
+.header {
+  background-color: var(--mantine-color-dark-6);
+  height: var(--app-header-height);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding-inline: var(--mantine-spacing-md);
+  z-index: 101;
+  border-bottom: 1px solid var(--mantine-color-dark-8);
+}
+
+.headerInner {
+  height: 100%;
+  justify-content: space-between;
+}

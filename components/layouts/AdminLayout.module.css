@@ -1,0 +1,5 @@
+.body {
+  padding-top: var(--app-header-height);
+  height: 100vh;
+  gap: 0;
+}
