@@ -2,27 +2,32 @@ import { Resource } from "./resource";
 
 export type EntityID = string | number;
 
-export interface Entity {
+export interface Entity extends Record<string, unknown> {
   id: EntityID;
 }
+
+export type EntityAttrib<E extends Entity> = keyof E | string;
+
+export type EntityValues<E extends Entity> = Record<EntityAttrib<E>, unknown>;
 
 export type EntityQueryWhereValue =
   | number
   | string
+  | Record<"contains" | "endsWith" | "startsWith" | "mode", string>
   | null
-  | { [k in "contains" | "endsWith" | "startsWith" | "mode"]?: string }
   | undefined;
 
-export type EntityQueryWhere<E extends Entity> = {
-  [key in keyof E]?: EntityQueryWhereValue;
-} & { _term?: string } & { _filter?: Record<string, string> } & {
-  [key: string]: EntityQueryWhereValue;
-};
+export type EntityQueryWhere<E extends Entity> =
+  | {
+      _term?: string;
+      _filter?: EntityValues<E>;
+    }
+  | Record<EntityAttrib<E>, EntityQueryWhereValue>;
 
-export type EntityQueryOrderBy<E extends Entity> = {
-  [key in keyof E]: "asc" | "desc";
-};
-
+export type EntityQueryOrderBy<E extends Entity> = Record<
+  EntityAttrib<E>,
+  "asc" | "desc"
+>;
 export interface EntityQuery<E extends Entity> {
   where?: EntityQueryWhere<E>;
   orderBy?: EntityQueryOrderBy<E>;

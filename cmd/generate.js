@@ -7,59 +7,94 @@ const entities = [];
 
 fs.readdirSync("./models").forEach((file) => {
   let name = path.basename(file, path.extname(file));
-  entities.push(name.charAt(0).toUpperCase() + name.slice(1));
+  if (name !== "index" && name !== "actions") {
+    entities.push(name);
+  }
 });
 
-async function generate(name, folder, template) {
-  const folderPath = path.join(process.cwd(), folder);
-  const templatePath = path.join(process.cwd(), template);
+function processPath(file) {
+  return path.join(process.cwd(), file);
+}
 
-  if (!fs.existsSync(folderPath)) {
-    fs.mkdirSync(folderPath);
+function clearFolder(dir) {
+  if (fs.existsSync(dir)) {
+    fs.readdirSync(dir).forEach((file) => {
+      fs.unlinkSync(path.join(dir, file));
+    });
+  } else {
+    fs.mkdirSync(dir);
+  }
+}
+
+function writeFile(path, content) {
+  if (fs.existsSync(path)) {
+    fs.unlinkSync(path);
   }
 
-  fs.readdirSync(folderPath).forEach((file) => {
-    fs.unlinkSync(path.join(folderPath, file));
-  });
+  fs.writeFileSync(path, content, "utf-8");
 
-  const templateContent = fs.readFileSync(`${templatePath}.template`, "utf-8");
+  console.log(`Arquivo gerado: ${path}`);
+}
 
-  let indexContent = "";
+function replaceEntityName(template, name) {
+  const nameCap = name.charAt(0).toUpperCase() + name.slice(1);
+  return template
+    .replace(/%\{Entity\}/g, nameCap)
+    .replace(/%\{entity\}/g, name);
+}
 
-  const indexPath = templatePath + "-index.template";
-  if (fs.existsSync(indexPath)) {
-    indexContent = fs.readFileSync(indexPath, "utf-8") + "\n\n";
-  }
+async function generateActions() {
+  const dirPath = processPath("./actions");
+  const tmpPath = processPath("./next-gs/cmd/generate-actions.template");
+  const tmpText = fs.readFileSync(tmpPath, "utf-8");
 
+  clearFolder(dirPath);
+
+  let indexText = "";
   entities.forEach((entity) => {
-    const entityLower = entity.toLowerCase();
+    indexText += `export * from "./${entity}";\n`;
 
-    const filePath = path.join(folderPath, `${entityLower}.ts`);
-
-    const fileContent = templateContent
-      .replace(/%\{Entity\}/g, entity)
-      .replace(/%\{entity\}/g, entityLower);
-
-    fs.writeFileSync(filePath, fileContent, "utf-8");
-
-    console.log(`Arquivo gerado: ${filePath}`);
-
-    indexContent += `export * from "./${entityLower}";\n`;
+    writeFile(
+      path.join(dirPath, `${entity}.ts`),
+      replaceEntityName(tmpText, entity)
+    );
   });
 
-  fs.writeFileSync(path.join(folderPath, "index.ts"), indexContent, "utf-8");
+  writeFile(path.join(dirPath, "index.ts"), indexText);
+}
 
-  console.log(`${name} gerados com sucesso!`);
+async function generateResources() {
+  let indexText = `"use client"
+
+import { registerEntityActions } from "../next-gs";
+
+import * as serverActions from "../actions";
+
+registerEntityActions(serverActions);\n\n`;
+
+  entities.forEach(async (entity) => {
+    indexText += `import { resource as ${entity} } from "./${entity}";\n`;
+  });
+
+  indexText += "\nconst resources = { " + entities.join(", ") + "};\n\n";
+
+  indexText += "export default resources";
+
+  writeFile(processPath("./models/index.ts"), indexText, "utf-8");
 }
 
 const execute = async () => {
-  await generate("Actions", "./actions", "./next-gs/cmd/generate-actions");
-  await generate("Hooks", "./hooks", "./next-gs/cmd/generate-hooks");
+  await generateActions();
+  await generateResources();
 };
 
 if (entities.length > 0) {
-  execute().catch((err) => {
-    console.error("Erro ao gerar ações:", err);
-    process.exit(1);
-  });
+  execute()
+    .then(() => {
+      console.log(`Arquivos gerados com sucesso!`);
+    })
+    .catch((err) => {
+      console.error("Erro ao gerar ações:", err);
+      process.exit(1);
+    });
 }

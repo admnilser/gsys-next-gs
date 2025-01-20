@@ -5,15 +5,15 @@ import { useDisclosure } from "@mantine/hooks";
 
 import { Entity, EntityQueryWhere, EntityService } from "../../model/entity";
 
+import { EntityTable, EntityTableProps } from "../ui/EntityTable";
 import { SearchInput } from "../ui/SearchInput";
 import { IconButton } from "../ui/Buttons";
-import { List, ListProps } from "../ui/List";
+import { FormValues } from "../ui/Form";
 
 import { FilterFormProps } from "./FilterForm";
-import { EntityPager } from "./EntityPager";
 
 export interface EntityListProps<E extends Entity>
-  extends Omit<ListProps<E>, "items"> {
+  extends Omit<EntityTableProps<E>, "records"> {
   service: EntityService<E>;
   filterForm?: React.ComponentType<FilterFormProps>;
 }
@@ -26,7 +26,7 @@ export function EntityList<E extends Entity>({
   const [filterOpened, { open: showFilter, close: hideFilter }] =
     useDisclosure();
 
-  const findMany = async (where: EntityQueryWhere<E> = {}) => {
+  const findMany = async (where?: EntityQueryWhere<E>) => {
     await service.findMany({ where });
   };
 
@@ -52,7 +52,7 @@ export function EntityList<E extends Entity>({
               <FilterForm
                 title={`Pesquisar ${service.res.title.plural}`}
                 opened={filterOpened}
-                values={service?.query?.where?._filter}
+                values={service?.query?.where?._filter as FormValues}
                 onSubmit={async (_filter) => {
                   await service.findMany({
                     where: { _filter } as EntityQueryWhere<E>,
@@ -73,13 +73,7 @@ export function EntityList<E extends Entity>({
         onSearch={(_term) => findMany({ _term })}
       />
 
-      <List
-        items={service.data}
-        onItemClick={(item) => service.select(item)}
-        {...props}
-      />
-
-      <EntityPager service={service} mt="md" />
+      <EntityTable<E> service={service} {...props} />
     </Paper>
   );
 }

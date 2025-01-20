@@ -1,7 +1,0 @@
-"use client";
-
-import { registerEntityActions } from "../next-gs";
-
-import * as serverActions from "../actions";
-
-registerEntityActions(serverActions);

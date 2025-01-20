@@ -169,7 +169,3 @@ export function useEntityService<E extends Entity>(res: Resource<E>) {
     select,
   } as EntityService<E>;
 }
-
-export function createServiceHook<E extends Entity>(res: Resource<E>) {
-  return () => useEntityService<E>(res);
-}

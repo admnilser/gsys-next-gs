@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import {
   Form,
   FormField,
@@ -10,11 +12,13 @@ import {
 } from "../ui/Form";
 
 import { CenterPage } from "./CenterPage";
+import { Anchor, Stack } from "@mantine/core";
 
 export function SignUpPage() {
+  const router = useRouter();
   return (
     <CenterPage>
-      <Form action="/api/signup">
+      <Form action="/api/signup" onSubmited={() => router.push("/login")}>
         <FormHead title="Registrar Usuário" />
         <FormBody>
           <FormField type="text" name="name" label="Nome" leftIcon="user" />
@@ -28,7 +32,12 @@ export function SignUpPage() {
           />
         </FormBody>
         <FormFoot>
-          <FormSubmit fullWidth>Cadastrar</FormSubmit>
+          <Stack>
+            <FormSubmit fullWidth>Cadastrar</FormSubmit>
+            <Anchor href="/login" size="sm">
+              Já possui uma conta? Faça login
+            </Anchor>
+          </Stack>
         </FormFoot>
       </Form>
     </CenterPage>

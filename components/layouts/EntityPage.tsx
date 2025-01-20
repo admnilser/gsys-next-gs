@@ -1,6 +1,9 @@
 import React from "react";
 
-import { Entity, EntityID, EntityService } from "../../model/entity";
+import { Entity, EntityID } from "../../model/entity";
+
+import { Resource } from "../../model/resource";
+import { useEntityService } from "../../model/service";
 
 import { FormScene, FormSceneType, FormValues } from "../ui/Form";
 
@@ -11,12 +14,13 @@ import { EntityListProps } from "./EntityList";
 
 export type EntityPageListProps<E extends Entity> = Omit<
   EntityListProps<E>,
-  "renderItem"
+  "columns"
 >;
+
 export type EntityPageFormProps<E extends Entity> = EntityFormProps<E>;
 
 export interface EntityPageProps<E extends Entity> {
-  service: EntityService<E>;
+  resource: Resource<E>;
   selected?: EntityID;
   list: React.ComponentType<EntityPageListProps<E>>;
   form?: React.ComponentType<EntityPageFormProps<E>>;
@@ -24,11 +28,13 @@ export interface EntityPageProps<E extends Entity> {
 }
 
 export function EntityPage<E extends Entity>({
-  service,
+  resource,
   list: List,
   form: Form,
   formScene = "modal",
 }: EntityPageProps<E>) {
+  const service = useEntityService<E>(resource);
+
   const clearServiceItem = () => {
     service.select(undefined);
   };

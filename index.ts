@@ -1,5 +1,6 @@
-import "@mantine/core/styles.css";
-import "@mantine/notifications/styles.css";
+import "@mantine/core/styles.layer.css";
+import "@mantine/notifications/styles.layer.css";
+import "mantine-datatable/styles.layer.css";
 import "./styles.css";
 
 export * from "./components/layouts/RootLayout";
@@ -19,6 +20,8 @@ export * from "./components/ui/Inputs";
 export * from "./components/ui/Buttons";
 export * from "./components/ui/SearchInput";
 export * from "./components/ui/SelectInput";
+export * from "./components/ui/LookupInput";
+export * from "./components/ui/EntityTable";
 
 export * from "./utils/auth";
 export * from "./utils/lodash";

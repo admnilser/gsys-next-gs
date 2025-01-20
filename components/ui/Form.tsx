@@ -34,6 +34,7 @@ export interface FormProps extends React.PropsWithChildren {
   values?: FormValues;
   action?: string;
   onSubmit?: (values: FormValues) => Promise<FormErrors | void>;
+  onSubmited?: (values: FormValues) => void;
   onValidate?: (values: FormValues) => FormErrors;
 }
 
@@ -42,6 +43,7 @@ export function Form({
   values,
   children,
   onSubmit,
+  onSubmited,
   onValidate,
 }: FormProps) {
   const form = useForm({
@@ -51,17 +53,21 @@ export function Form({
   });
 
   const handleSubmit = async (values: FormValues) => {
+    let errors: FormErrors | undefined | void;
+
     if (onSubmit) {
-      const errors = await onSubmit(values);
-      if (errors) form.setErrors(errors);
+      errors = await onSubmit(values);
     } else if (action) {
-      const { errors } = await fetchJson<FormValues, { errors: FormErrors }>({
+      const resp = await fetchJson<FormValues, { errors: FormErrors }>({
         path: action,
         method: "POST",
         data: values,
       });
-      if (errors) form.setErrors(errors);
+      errors = resp.errors;
     }
+
+    if (errors) form.setErrors(errors);
+    else if (onSubmited) onSubmited(values);
   };
 
   return (

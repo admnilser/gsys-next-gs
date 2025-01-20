@@ -80,22 +80,23 @@ export async function createAuthHandler() {
       }),
     ],
     callbacks: {
-      async signIn({ user }) {
-        if (!user.name || !user.email) return false;
+      async signIn({ user: { name, email, image } }) {
+        if (!name || !email) return false;
 
-        const lastLogin = new Date();
+        const now = new Date();
 
         await prisma.user.upsert({
-          where: { email: user.email },
+          where: { email },
           create: {
-            name: user.name,
-            email: user.email,
-            image: user.image,
+            name,
+            email,
+            image,
             pswd: "",
-            lastLogin,
+            lastLogin: now,
+            createdAt: now,
           },
           update: {
-            lastLogin,
+            lastLogin: now,
           },
         });
 
