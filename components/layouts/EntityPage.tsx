@@ -2,12 +2,10 @@ import React from "react";
 
 import { Entity, EntityID } from "../../model/entity";
 
-import { Resource } from "../../model/resource";
+import { Resource } from "../../utils/resource";
 import { useEntityService } from "../../model/service";
 
 import { FormScene, FormSceneType, FormValues } from "../ui/Form";
-
-import notify from "../../utils/notifiy";
 
 import { EntityFormProps } from "./EntityForm";
 import { EntityListProps } from "./EntityList";
@@ -40,14 +38,9 @@ export function EntityPage<E extends Entity>({
   };
 
   const handleSubmit = async (values: FormValues) => {
-    const result = await service.persist(values as Partial<E>);
-    if (result.error) {
-      notify.error(result.error.message);
-    } else {
-      clearServiceItem();
-      notify.info(`${service.res.title.singular} salvo com sucesso!`);
-    }
-    return result.errors;
+    const { error, errors } = await service.persist(values as Partial<E>);
+    if (!error) clearServiceItem();
+    return errors;
   };
 
   const form =

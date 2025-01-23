@@ -1,4 +1,5 @@
-import { Resource } from "./resource";
+import { Prisma } from "../utils/prisma";
+import { Resource } from "../utils/resource";
 
 export type EntityID = string | number;
 
@@ -10,19 +11,11 @@ export type EntityAttrib<E extends Entity> = keyof E | string;
 
 export type EntityValues<E extends Entity> = Record<EntityAttrib<E>, unknown>;
 
-export type EntityQueryWhereValue =
-  | number
-  | string
-  | Record<"contains" | "endsWith" | "startsWith" | "mode", string>
-  | null
-  | undefined;
-
-export type EntityQueryWhere<E extends Entity> =
-  | {
-      _term?: string;
-      _filter?: EntityValues<E>;
-    }
-  | Record<EntityAttrib<E>, EntityQueryWhereValue>;
+export interface EntityQueryWhere<E extends Entity>
+  extends Prisma.RoleWhereInput {
+  _term?: string;
+  _filter?: EntityValues<E>;
+}
 
 export type EntityQueryOrderBy<E extends Entity> = Record<
   EntityAttrib<E>,

@@ -4,10 +4,10 @@ import { IconX, IconCheck, IconAlertCircle } from "@tabler/icons-react";
 
 const notify = {
   ...notifications,
-  error: (message: string) => {
+  error: (message: string | Error) => {
     notifications.show({
       title: "Erro",
-      message,
+      message: message instanceof Error ? message.message : message,
       color: "red",
       icon: <IconX />,
       withCloseButton: true,

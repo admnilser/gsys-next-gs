@@ -3,7 +3,7 @@ import React from "react";
 import { ComboboxItem, Loader, Select } from "@mantine/core";
 import { useTimeout } from "@mantine/hooks";
 
-import { Resource } from "../../model/resource";
+import { Resource } from "../../utils/resource";
 
 import { Entity, EntityID } from "../../model/entity";
 
@@ -30,7 +30,8 @@ export function useLookup<E extends Entity>({
 
   const [items, setItems] = React.useState<ComboboxItem[]>([]);
 
-  const getEntityName = (e: E) => _.get(e, [service.res.nameField], "");
+  const getEntityName = (e: E) =>
+    _.get(e, [service.res.nameField], "") as string;
 
   const findByTerm = (_term: string) => {
     if (_term) {

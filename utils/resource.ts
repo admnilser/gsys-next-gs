@@ -1,3 +1,7 @@
+import { User } from "next-auth";
+
+import { ModelName, ModelRules } from "./prisma";
+
 export interface ResourceParseResult<T> {
   parsed?: Partial<T>;
   errors?: Record<keyof T, string>;
@@ -9,10 +13,10 @@ export interface ResourceTitle {
 }
 
 export interface Resource<T> {
-  name: string;
+  name: ModelName;
   title: ResourceTitle;
-  role: string;
   nameField: string;
   termFields?: string[];
   parse: (data: Partial<T>) => ResourceParseResult<T>;
+  rules: (user: User | undefined) => ModelRules | null;
 }

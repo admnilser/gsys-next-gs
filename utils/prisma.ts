@@ -1,17 +1,25 @@
-import { PrismaClient, PrismaPromise } from "./prisma/client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
-const prisma = new PrismaClient();
+import { Prisma, PrismaClient, PrismaPromise } from "./prisma/client";
 
-export default prisma;
+export type ModelName = Prisma.ModelName;
 
-export type PrismaRepoWhere = Record<string, unknown>;
+export type ModelAction =
+  | "read"
+  | "create"
+  | "update"
+  | "delete"
+  | "all"
+  | "manage";
+
+export type ModelRules = Partial<Record<ModelAction, boolean | unknown>>;
 
 export interface PrismaRepository<I, T> {
-  count: (args: { where?: PrismaRepoWhere }) => PrismaPromise<number>;
+  count: (args: { where?: Prisma.RoleWhereInput }) => PrismaPromise<number>;
   findMany: (args: {
     take?: number;
     skip?: number;
-    where?: PrismaRepoWhere;
+    where?: Prisma.RoleWhereInput;
     orderBy?: Record<string, "asc" | "desc">;
   }) => PrismaPromise<T[]>;
   findUnique: (args: { where: { id: I } }) => PrismaPromise<T>;
@@ -20,8 +28,31 @@ export interface PrismaRepository<I, T> {
   delete: (args: { where: { id: I } }) => PrismaPromise<T>;
 }
 
-export function repository<I, T>(name: string) {
-  return (prisma as unknown as Record<string, unknown>)[
-    name
-  ] as PrismaRepository<I, T>;
+export function repository<I, T>(name: ModelName) {
+  return (prisma as any)[name.toLowerCase()] as PrismaRepository<I, T>;
 }
+
+export { Prisma };
+
+const prisma = new PrismaClient({
+  log: [
+    {
+      emit: "event",
+      level: "query",
+    },
+    {
+      emit: "stdout",
+      level: "error",
+    },
+    {
+      emit: "stdout",
+      level: "info",
+    },
+    {
+      emit: "stdout",
+      level: "warn",
+    },
+  ],
+});
+
+export default prisma;

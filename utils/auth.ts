@@ -1,6 +1,8 @@
 "use server";
 
-import NextAuth, { DefaultSession } from "next-auth";
+import { NextResponse } from "next/server";
+
+import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -9,16 +11,7 @@ import prisma from "./prisma";
 
 import { checkPassword, hashPassword } from "./crypt";
 
-import { NextResponse } from "next/server";
 import { createZodParser } from "./zod-pt";
-
-declare module "next-auth" {
-  interface Session {
-    user: {
-      id: string;
-    } & DefaultSession["user"];
-  }
-}
 
 const validateSignUp = createZodParser((z) => ({
   name: z.string().min(3, "Nome deve ter pelo menos 3 caracteres"),
@@ -111,6 +104,11 @@ export async function createAuthHandler() {
 
         if (user) {
           session.user.id = user.id;
+          session.user.role = "admin";
+          session.user.teamId = "76898393391";
+          session.user.memberId = "76898393391";
+          session.user.organizationId = "76898393391";
+          session.user.abilities = {};
         }
 
         return session;

@@ -79,6 +79,19 @@ export function EntityTable<E extends Entity>({
     }
   }, [orderBy]);
 
+  const paginationProps =
+    service.total > 0
+      ? {
+          totalRecords: service.total,
+          recordsPerPage: service.pager.pageSize,
+          recordsPerPageOptions: [10, 20, 50, 100],
+          page: service.pager.page,
+          onRecordsPerPageChange: (pageSize: number) =>
+            service.navigate({ pageSize }),
+          onPageChange: (page: number) => service.navigate({ page }),
+        }
+      : {};
+
   return (
     <DataTable
       borderRadius="sm"
@@ -93,15 +106,10 @@ export function EntityTable<E extends Entity>({
       records={service.data}
       storeColumnsKey={key}
       columns={effectiveColumns}
-      totalRecords={service.total}
-      recordsPerPage={service.pager.pageSize}
-      recordsPerPageOptions={[10, 20, 50, 100]}
-      page={service.pager.page}
-      onRecordsPerPageChange={(pageSize) => service.navigate({ pageSize })}
-      onPageChange={(page) => service.navigate({ page })}
       sortStatus={sortStatus}
       onSortStatusChange={handleSortStatusChange}
       {...props}
+      {...paginationProps}
     />
   );
 }

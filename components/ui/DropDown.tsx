@@ -24,7 +24,6 @@ export function DropDown({ items, children, ...rest }: DropDownProps) {
 
   const itemClick = (index: number) => {
     const item = items[index];
-    console.log(item);
     if (item.href) {
       router.push(item.href);
     } else if (item.onClick) {
