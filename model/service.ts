@@ -19,7 +19,7 @@ import {
 import { useReplace } from "../hooks/useReplace";
 
 import { Resource } from "../utils/resource";
-import notify from "../utils/notifiy";
+import notify from "../utils/notify";
 import _ from "../utils/lodash";
 
 const emptyState = {

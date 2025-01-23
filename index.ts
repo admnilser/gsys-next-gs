@@ -30,10 +30,12 @@ export * from "./utils/crypt";
 export * from "./utils/session";
 export * from "./utils/zod-pt";
 export * from "./utils/casl";
+export * from "./utils/resource";
+
+export { default as notify } from "./utils/notify";
 
 export * from "./model/actions";
 export * from "./model/entity";
-export * from "./utils/resource";
 export * from "./model/service";
 
 export * from "./hooks/useIsMobile";

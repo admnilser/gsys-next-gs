@@ -1,6 +1,6 @@
 {
   "name": "next-gs",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "NPM package for building a React+NextJS+Prisma admin application.",
   "main": "index.ts",
   "scripts": {
@@ -18,7 +18,7 @@
     "NextAuth",
     "Admin"
   ],
-  "author": "Seu Nome <seu.email@example.com>",
+  "author": "Nilson Sergio <adm.nilsonsergio@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
