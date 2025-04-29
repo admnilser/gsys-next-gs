@@ -18,17 +18,11 @@
 				"name": "next"
 			}
 		],
+		"baseUrl": ".",
 		"paths": {
-			"@next-gs/*": ["./*"]
+			"@next-gs": ["./*"]
 		}
 	},
-	"include": [
-		"next-env.d.ts",
-		"**/*.ts",
-		"**/*.tsx",
-		".next/types/**/*.ts",
-		"client/components/ui/inputs/EntitySelect.tsx.bkp",
-		"client/components/ui/inputs/EntityLookup.tsx.bkp"
-	],
+	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
 	"exclude": ["node_modules"]
 }
