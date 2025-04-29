@@ -23,13 +23,12 @@ export function createZodParser(creator: (z: Zod) => z.ZodRawShape) {
     const { success, data: parsed, error } = schema.safeParse(obj);
     if (success) {
       return { success, parsed };
-    } else {
-      const errors: Record<string, string> = {};
-      error.issues.forEach((issue) => {
-        errors[issue.path[0]] = issue.message;
-      });
-      return { success, errors };
     }
+    const errors: Record<string, string> = {};
+    error.issues.forEach((issue) => {
+      errors[issue.path[0]] = issue.message;
+    });
+    return { success, errors };
   };
   parser.schema = schema;
   return parser;

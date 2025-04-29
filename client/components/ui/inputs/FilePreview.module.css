@@ -1,0 +1,12 @@
+.preview {
+	display: inline-block;
+	position: relative;
+	min-width: 100px;
+}
+
+.button {
+	top: 8px;
+	right: 8px;
+	opacity: 5;
+	position: absolute;
+}
